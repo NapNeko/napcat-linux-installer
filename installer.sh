@@ -232,7 +232,7 @@ function download_launcher_so() {
         exit 1
     fi
 
-    cpp_url="https://raw.githubusercontent.com/NapNeko/napcat-linux-launcher/refs/tags/1.0.1/launcher.cpp"
+    cpp_url="https://raw.githubusercontent.com/NapNeko/napcat-linux-launcher/refs/heads/main/launcher.cpp"
     cpp_file="launcher.cpp"
     so_file="libnapcat_launcher.so"
 
