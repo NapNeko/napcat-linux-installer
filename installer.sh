@@ -227,10 +227,10 @@ function download_launcher_so() {
     network_test
 
     if [ "${system_arch}" = "amd64" ]; then
-        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.0/libnapcat_launcher_amd64.so"
+        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.1/libnapcat_launcher_amd64.so"
         so_file="libnapcat_launcher.so"
     elif [ "${system_arch}" = "arm64" ]; then
-        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.0/libnapcat_launcher_arm64.so"
+        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.1/libnapcat_launcher_arm64.so"
         so_file="libnapcat_launcher.so"
     else
         log "不支持的架构: ${system_arch}"
