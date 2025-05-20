@@ -226,31 +226,38 @@ function download_launcher_so() {
     get_system_arch
     network_test
 
-    if [ "${system_arch}" = "amd64" ]; then
-        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.1/libnapcat_launcher_amd64.so"
-        so_file="libnapcat_launcher.so"
-    elif [ "${system_arch}" = "arm64" ]; then
-        so_url="https://github.com/NapNeko/napcat-linux-launcher/releases/download/1.0.1/libnapcat_launcher_arm64.so"
-        so_file="libnapcat_launcher.so"
-    else
+    # 只支持 amd64/arm64 架构
+    if [ "${system_arch}" != "amd64" ] && [ "${system_arch}" != "arm64" ]; then
         log "不支持的架构: ${system_arch}"
         exit 1
     fi
 
+    cpp_url="https://raw.githubusercontent.com/NapNeko/napcat-linux-launcher/refs/tags/1.0.1/launcher.cpp"
+    cpp_file="launcher.cpp"
+    so_file="libnapcat_launcher.so"
+
     if [ -n "${target_proxy}" ]; then
-        so_url_path="${so_url#https://}"
-        download_url="${target_proxy}/${so_url_path}"
+        cpp_url_path="${cpp_url#https://}"
+        download_url="${target_proxy}/${cpp_url_path}"
     else
-        download_url="${so_url}"
+        download_url="${cpp_url}"
     fi
 
-    log "开始下载 ${so_file} ..."
-    curl -k -L -# "${download_url}" -o "${so_file}"
+    log "开始下载 ${cpp_file} ..."
+    curl -k -L -# "${download_url}" -o "${cpp_file}"
     if [ $? -ne 0 ]; then
-        log "${so_file} 下载失败，请检查网络或手动下载。"
+        log "${cpp_file} 下载失败，请检查网络或手动下载。"
         exit 1
     fi
-    log "${so_file} 下载成功。"
+    log "${cpp_file} 下载成功。"
+
+    log "正在编译 ${so_file} ..."
+    g++ -shared -fPIC "${cpp_file}" -o "${so_file}" -ldl
+    if [ $? -ne 0 ]; then
+        log "${so_file} 编译失败，请检查g++是否安装或源码是否有误。"
+        exit 1
+    fi
+    log "${so_file} 编译成功。"
 }
 
 clear
