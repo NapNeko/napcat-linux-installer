@@ -20,3 +20,13 @@ curl -o napcat.sh https://jiashu.1win.eu.org/https://raw.githubusercontent.com/N
 ```bash
 curl -o napcat.sh https://raw.githubusercontent.com/NapNeko/napcat-linux-installer/refs/heads/main/install.sh && sudo bash napcat.sh
 ```
+### 关于与使用
+准备工作
+```
+Xvfb :1 -screen 0 1x1x8 +extension GLX +render > /dev/null 2>&1 &
+```
+启动代码(可重复执行)
+```
+export DISPLAY=:1
+LD_PRELOAD=./libnapcat_launcher.so qq
+```
