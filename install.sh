@@ -74,10 +74,10 @@ function install_dependency() {
 
     if [ "${package_manager}" = "apt-get" ]; then
         sudo apt-get update -y -qq
-        sudo apt-get install -y -qq zip unzip jq curl xvfb screen xauth procps
+        sudo apt-get install -y -qq zip unzip jq curl xvfb screen xauth procps g++
     elif [ "${package_manager}" = "dnf" ]; then
         sudo dnf install -y epel-release
-        sudo dnf install --allowerasing -y zip unzip jq curl xorg-x11-server-Xvfb screen procps-ng
+        sudo dnf install --allowerasing -y zip unzip jq curl xorg-x11-server-Xvfb screen procps-ng gcc-c++
     fi
     log "依赖安装成功..."
 }
