@@ -183,15 +183,15 @@ function install_linuxqq() {
     log "安装LinuxQQ..."
     if [ "${system_arch}" = "amd64" ]; then
         if [ "${package_installer}" = "rpm" ]; then
-            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/5aa2d8d6/linuxqq_3.2.17-34740_x86_64.rpm"
+            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/c773cdf7/linuxqq_3.2.19-39038_x86_64.rpm"
         elif [ "${package_installer}" = "dpkg" ]; then
-            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/5aa2d8d6/linuxqq_3.2.17-34740_amd64.deb"
+            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/c773cdf7/linuxqq_3.2.19-39038_amd64.deb"
         fi
     elif [ "${system_arch}" = "arm64" ]; then
         if [ "${package_installer}" = "rpm" ]; then
-            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/5aa2d8d6/linuxqq_3.2.17-34740_aarch64.rpm"
+            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/c773cdf7/linuxqq_3.2.19-39038_aarch64.rpm"
         elif [ "${package_installer}" = "dpkg" ]; then
-            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/5aa2d8d6/linuxqq_3.2.17-34740_arm64.deb"
+            qq_download_url="https://dldir1.qq.com/qqfile/qq/QQNT/c773cdf7/linuxqq_3.2.19-39038_arm64.deb"
         fi
     fi
 
