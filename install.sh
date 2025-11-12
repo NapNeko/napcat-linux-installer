@@ -275,6 +275,7 @@ cat << 'EOF' > launcher.sh
 #!/bin/bash
 Xvfb :1 -screen 0 1x1x8 +extension GLX +render > /dev/null 2>&1 &
 export DISPLAY=:1
+trap "" SIGPIPE
 LD_PRELOAD=./libnapcat_launcher.so qq --no-sandbox
 EOF
 
