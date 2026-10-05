@@ -89,7 +89,7 @@ function network_test() {
     target_proxy=""
     log "开始网络测试: Github..."
 
-    proxy_arr=("https://ghfast.top" "https://gh.wuliya.xin" "https://gh-proxy.com" "https://github.moeyy.xyz")
+    proxy_arr=("https://ghfast.top" "https://ghproxy.net" "https://gh-proxy.com" "https://github.dpik.top")
     check_url="https://raw.githubusercontent.com/NapNeko/NapCatQQ/main/package.json"
 
     for proxy in "${proxy_arr[@]}"; do
@@ -177,43 +177,54 @@ function get_system_arch() {
     log "当前系统架构: ${system_arch}"
 }
 
+function download_qq() {
+    local out="$1" url
+    for url in "${qq_download_urls[@]}"; do
+        log "QQ下载链接: ${url}"
+        # -f: 链接失效时不要把 404 页面当成安装包存下来
+        if sudo curl -f -k -L -# "${url}" -o "${out}"; then
+            return 0
+        fi
+        sudo rm -f "${out}"
+        log "下载失败，尝试下一个下载源..."
+    done
+    log "QQ下载失败"
+    exit 1
+}
+
 function install_linuxqq() {
     get_system_arch
     detect_package_installer
     log "安装LinuxQQ..."
-    # 官方下载源已从 dldir1 切到 qqdl.gtimg.cn（来源：im.qq.com pcConfig.json Linux 段）
-    # 旧链 https://dldir1.qq.com/qqfile/qq/QQNT/8015ff90/linuxqq_3.2.21-42086_* 已 404
+    # LinuxQQ 3.2.32-52194，官方 CDN 是 qqdl.gtimg.cn
+    # 腾讯会不定期下架旧版本，官方链接 404 时改从 GitHub 上的镜像（Rodert/qq-versions）下载
     if [ "${system_arch}" = "amd64" ]; then
         if [ "${package_installer}" = "rpm" ]; then
-            qq_download_url="https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_x86_64_01.rpm"
+            qq_file="QQ_3.2.32_260812_x86_64_01.rpm"
         elif [ "${package_installer}" = "dpkg" ]; then
-            qq_download_url="https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_amd64_01.deb"
+            qq_file="QQ_3.2.32_260812_amd64_01.deb"
         fi
     elif [ "${system_arch}" = "arm64" ]; then
         if [ "${package_installer}" = "rpm" ]; then
-            qq_download_url="https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_aarch64_01.rpm"
+            qq_file="QQ_3.2.32_260812_aarch64_01.rpm"
         elif [ "${package_installer}" = "dpkg" ]; then
-            qq_download_url="https://qqdl.gtimg.cn/qqfile/QQNT/9.9.32/release/c390e792/QQ_3.2.31_260710_arm64_01.deb"
+            qq_file="QQ_3.2.32_260812_arm64_01.deb"
         fi
     fi
+    qq_download_urls=(
+        "https://qqdl.gtimg.cn/qqfile/QQNT/9.9.33/release/3f89efc5/${qq_file}"
+        "${target_proxy:+${target_proxy}/}https://github.com/Rodert/qq-versions/releases/download/qq-packages-20260813-1d08f1d4/${qq_file}"
+    )
 
     if [ "${package_manager}" = "dnf" ]; then
         if ! [ -f "QQ.rpm" ]; then
-            sudo curl -k -L -# "${qq_download_url}" -o QQ.rpm
-            if [ $? -ne 0 ]; then
-                log "QQ下载失败"
-                exit 1
-            fi
+            download_qq QQ.rpm
         fi
         sudo dnf localinstall -y ./QQ.rpm
         sudo rm -f QQ.rpm
     elif [ "${package_manager}" = "apt-get" ]; then
         if ! [ -f "QQ.deb" ]; then
-            sudo curl -k -L -# "${qq_download_url}" -o QQ.deb
-            if [ $? -ne 0 ]; then
-                log "QQ下载失败"
-                exit 1
-            fi
+            download_qq QQ.deb
         fi
         sudo apt-get install -f -y --allow-downgrades -qq ./QQ.deb
         sudo apt-get install -y --allow-downgrades -qq libnss3
