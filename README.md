@@ -1,30 +1,17 @@
 # napcat-linux-installer
-NapCat自动化一次性安装器
-## 使用
-### Linux
-在需要的文件夹 执行此代码 稍等片刻即可运行 任选一个 其余为镜像
+
+Linux 非侵入式安装器，支持 apt / dnf / zypper，保留 QQ 原入口。
+
+## 安装与启动
+
+在用于保存 NapCat 配置和插件的固定目录执行：
 
 ```bash
-curl -o napcat.sh https://ghfast.top/https://raw.githubusercontent.com/NapNeko/napcat-linux-installer/refs/heads/main/install.sh && sudo bash napcat.sh
+curl -fL -o napcat-linux.sh https://raw.githubusercontent.com/NapNeko/napcat-linux-installer/main/install.sh &&
+sudo bash napcat-linux.sh --github-proxy 0
+bash ./launcher.sh
 ```
 
-```bash
-curl -o napcat.sh https://jiashu.1win.eu.org/https://raw.githubusercontent.com/NapNeko/napcat-linux-installer/refs/heads/main/install.sh && sudo bash napcat.sh
-```
+启动器会配置 Xvfb 和 QQ 路径，无需手动设置 `DISPLAY` 或 `LD_PRELOAD`。
 
-国外服务器可使用以下命令
-```bash
-curl -o napcat.sh https://raw.githubusercontent.com/NapNeko/napcat-linux-installer/refs/heads/main/install.sh && sudo bash napcat.sh
-```
-### 关于与使用
-必须在 libnapcat_launcher.so 的目录内运行
-
-准备工作
-```
-Xvfb :1 -screen 0 1x1x8 +extension GLX +render > /dev/null 2>&1 &
-```
-启动代码(可重复执行)
-```
-export DISPLAY=:1
-LD_PRELOAD=./libnapcat_launcher.so qq
-```
+参数及网络设置见 [Shell 文档](https://napneko.github.io/guide/boot/Shell#linux-launcher)。
