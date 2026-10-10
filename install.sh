@@ -76,7 +76,9 @@ function install_dependency() {
         if [[ " ${ID} ${ID_LIKE} " == *" rhel "* || "${ID}" = "centos" ]]; then
             dnf install -y epel-release
         fi
-        dnf install -y zip unzip jq curl xorg-x11-server-Xvfb xorg-x11-xauth screen procps-ng gcc-c++ krb5-libs
+        local curl_packages=()
+        if ! command -v curl &>/dev/null; then curl_packages=(curl); fi
+        dnf install -y zip unzip jq "${curl_packages[@]}" xorg-x11-server-Xvfb xorg-x11-xauth screen procps-ng gcc-c++ krb5-libs
     elif [ "${package_manager}" = "zypper" ]; then
         zypper --non-interactive install zip unzip jq curl xvfb-run xauth screen procps gcc-c++ krb5 cpio \
             mozilla-nss mozilla-nspr libgtk-3-0 libgbm1 libasound2 libXtst6 libXss1 libnotify4 \
